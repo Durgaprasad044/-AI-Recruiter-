@@ -123,39 +123,39 @@ body {
 }
 
 /* Button Variants */
-.button--yellow {
-  background: linear-gradient(90deg, #fdfb72, #fce38a);
+.button.yellow {
+  background: linear-gradient(90deg, #f09636, #c3d474);
   color: #7796d9;
 }
-.button--yellow:hover {
-  background: #e6cd44;
+.button.yellow:hover {
+  background: orange;
 }
 
-.button--red {
-  background: linear-gradient(90deg, #f56565, #f87171);
+.button.red {
+  background: linear-gradient(90deg, #f56565, #612b2b);
 }
-.button--red:hover {
+.button.red:hover {
   background: #e53e3e;
 }
 
-.button--purple {
-  background: linear-gradient(90deg, #7f5af0, #a78bfa);
+.button.purple {
+  background: linear-gradient(90deg, #9284bd, #3b15acd2);
 }
-.button--purple:hover {
+.button.purple:hover {
   background: #6d28d9;
 }
 
-.button--blue {
+.button.blue {
   background: linear-gradient(90deg, #3b82f6, #60a5fa);
 }
-.button--blue:hover {
+.button.blue:hover {
   background: #2563eb;
 }
 
-.button--green {
-  background: linear-gradient(90deg, #10b981, #34d399);
+.button.green {
+  background: linear-gradient(90deg, #82c6b0, #135a56);
 }
-.button--green:hover {
+.button.green:hover {
   background: #059669;
 }
 
@@ -168,7 +168,7 @@ body {
 .list li {
   margin-bottom: 1rem;
   font-size: 1.05rem;
-  color: #fefefe;
+  color: #000000;
 }
 
 /* ========== Documentation Link ========== */
@@ -176,7 +176,7 @@ body {
   color: #b63a3a;
   font-weight: bold;
   text-decoration: underline;
-  transition: color 0.3s;
+  transition: color 0.1s;
 }
 .read-the-docs:hover {
   color: #861c1c;
@@ -184,7 +184,7 @@ body {
 
 /* ========== Output Display ========== */
 .output {
-  background-color: #f3f4f6;
+  background-color: #f5b4b4;
   border: 1px solid #d1d5db;
   border-radius: 10px;
   padding: 1rem;
