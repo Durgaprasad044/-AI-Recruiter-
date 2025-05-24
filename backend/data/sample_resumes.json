@@ -1,0 +1,15 @@
+
+[
+  {
+    "name": "Alice Johnson",
+    "content": "Python developer with 3 years experience in FastAPI, REST APIs, Docker and MongoDB. Built scalable microservices and automated test pipelines."
+  },
+  {
+    "name": "Bob Smith",
+    "content": "Frontend developer experienced in React, Redux, and TypeScript. Some exposure to Node.js and Express."
+  },
+  {
+    "name": "Carol Lee",
+    "content": "Software engineer with experience in Python, Django, RESTful APIs, and PostgreSQL. Also familiar with AWS and Docker."
+  }
+]
