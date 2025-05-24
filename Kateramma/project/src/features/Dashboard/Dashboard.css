@@ -1,0 +1,137 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.dashboard-subtitle {
+  color: var(--neutral-500);
+  margin: 0;
+}
+
+.dashboard-actions {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+}
+
+.dashboard-row {
+  display: flex;
+  gap: var(--space-6);
+}
+
+.dashboard-col {
+  flex: 1;
+  min-width: 0; /* Allow flex items to shrink below min-content size */
+}
+
+.dashboard-col-wide {
+  flex: 2;
+}
+
+.dashboard-col-narrow {
+  flex: 1;
+}
+
+/* Funnel styling */
+.funnel-card .card-body {
+  padding-top: var(--space-4);
+}
+
+.funnel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.funnel-stage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.stage-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+}
+
+.stage-name {
+  color: var(--neutral-700);
+}
+
+.stage-value {
+  font-weight: 500;
+}
+
+.stage-bar {
+  height: 8px;
+  background-color: var(--primary-500);
+  border-radius: var(--border-radius-full);
+  transition: width 1s ease-in-out;
+}
+
+.funnel-stage:nth-child(1) .stage-bar {
+  background-color: var(--primary-500);
+}
+
+.funnel-stage:nth-child(2) .stage-bar {
+  background-color: var(--primary-600);
+}
+
+.funnel-stage:nth-child(3) .stage-bar {
+  background-color: var(--secondary-500);
+}
+
+.funnel-stage:nth-child(4) .stage-bar {
+  background-color: var(--secondary-600);
+}
+
+.funnel-stage:nth-child(5) .stage-bar {
+  background-color: var(--accent-500);
+}
+
+.funnel-stage:nth-child(6) .stage-bar {
+  background-color: var(--accent-600);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-header {
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+  
+  .dashboard-actions {
+    width: 100%;
+  }
+  
+  .dashboard-actions button {
+    flex: 1;
+  }
+  
+  .dashboard-row {
+    flex-direction: column;
+  }
+  
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}

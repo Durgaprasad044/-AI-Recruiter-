@@ -1,0 +1,123 @@
+.interviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.interview-item {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--border-radius-md);
+  background-color: var(--neutral-50);
+  transition: background-color var(--transition-standard), transform var(--transition-standard);
+}
+
+.interview-item:hover {
+  background-color: var(--neutral-100);
+  transform: translateX(5px);
+}
+
+.interview-time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 80px;
+  padding: var(--space-2);
+  background-color: white;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.interview-date {
+  font-weight: 600;
+  color: var(--primary-600);
+  font-size: 0.875rem;
+}
+
+.interview-hour {
+  font-size: 0.75rem;
+  color: var(--neutral-600);
+}
+
+.interview-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.candidate-name {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--neutral-900);
+}
+
+.interview-position {
+  font-size: 0.875rem;
+  color: var(--neutral-600);
+}
+
+.interview-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-1);
+}
+
+.interview-interviewer {
+  font-size: 0.875rem;
+  color: var(--neutral-500);
+  display: flex;
+  align-items: center;
+}
+
+.interview-interviewer::before {
+  content: '👤';
+  margin-right: var(--space-1);
+}
+
+.interview-type {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--border-radius-full);
+}
+
+.interview-type.technical {
+  background-color: var(--primary-100);
+  color: var(--primary-800);
+}
+
+.interview-type.portfolio {
+  background-color: var(--secondary-100);
+  color: var(--secondary-800);
+}
+
+.interview-type.behavioral {
+  background-color: var(--accent-100);
+  color: var(--accent-800);
+}
+
+.interview-actions {
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .interview-item {
+    flex-wrap: wrap;
+  }
+  
+  .interview-time {
+    min-width: 60px;
+  }
+  
+  .interview-actions {
+    width: 100%;
+    margin-top: var(--space-2);
+    justify-content: flex-end;
+  }
+}

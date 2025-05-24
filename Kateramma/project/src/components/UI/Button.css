@@ -1,0 +1,172 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-weight: 500;
+  border-radius: var(--border-radius-md);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-standard);
+  white-space: nowrap;
+}
+
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Sizes */
+.btn-small {
+  padding: var(--space-1) var(--space-3);
+  font-size: 0.875rem;
+}
+
+.btn-medium {
+  padding: var(--space-2) var(--space-4);
+  font-size: 1rem;
+}
+
+.btn-large {
+  padding: var(--space-3) var(--space-5);
+  font-size: 1.125rem;
+}
+
+/* Variants */
+.btn-primary {
+  background-color: var(--primary-600);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-700);
+}
+
+.btn-primary:active {
+  background-color: var(--primary-800);
+}
+
+.btn-secondary {
+  background-color: var(--secondary-600);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: var(--secondary-700);
+}
+
+.btn-secondary:active {
+  background-color: var(--secondary-800);
+}
+
+.btn-accent {
+  background-color: var(--accent-600);
+  color: white;
+}
+
+.btn-accent:hover {
+  background-color: var(--accent-700);
+}
+
+.btn-accent:active {
+  background-color: var(--accent-800);
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 1px solid var(--primary-600);
+  color: var(--primary-600);
+}
+
+.btn-outline:hover {
+  background-color: var(--primary-50);
+}
+
+.btn-outline:active {
+  background-color: var(--primary-100);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--primary-600);
+}
+
+.btn-ghost:hover {
+  background-color: var(--neutral-100);
+}
+
+.btn-ghost:active {
+  background-color: var(--neutral-200);
+}
+
+.btn-danger {
+  background-color: var(--error-500);
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #dc2626;
+}
+
+.btn-danger:active {
+  background-color: #b91c1c;
+}
+
+.btn-success {
+  background-color: var(--success-500);
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #059669;
+}
+
+.btn-success:active {
+  background-color: #047857;
+}
+
+/* States */
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+/* Animation */
+.btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.4);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%, -50%);
+  transform-origin: 50% 50%;
+}
+
+.btn:focus:not(:active)::after {
+  animation: ripple 0.5s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(20, 20);
+    opacity: 0;
+  }
+}

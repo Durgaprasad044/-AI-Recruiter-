@@ -1,0 +1,131 @@
+.chart-tabs {
+  display: flex;
+  margin-bottom: var(--space-4);
+  border-bottom: 1px solid var(--neutral-200);
+}
+
+.chart-tab {
+  padding: var(--space-2) var(--space-4);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--neutral-600);
+  cursor: pointer;
+  font-weight: 500;
+  transition: color var(--transition-standard), border-color var(--transition-standard);
+}
+
+.chart-tab:hover {
+  color: var(--primary-600);
+}
+
+.chart-tab.active {
+  color: var(--primary-600);
+  border-bottom-color: var(--primary-600);
+}
+
+.chart-container {
+  height: 250px;
+  margin-bottom: var(--space-4);
+}
+
+.chart {
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+}
+
+.chart-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  height: 100%;
+}
+
+.chart-bar {
+  width: 100%;
+  max-width: 40px;
+  background-color: var(--primary-500);
+  border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
+  position: relative;
+  transition: height 0.5s ease;
+  animation: growUp 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes growUp {
+  0% {
+    height: 0;
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.chart-bar::before {
+  content: attr(data-value);
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--neutral-600);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.chart-bar:hover {
+  background-color: var(--primary-600);
+}
+
+.chart-bar:hover::before {
+  opacity: 1;
+}
+
+.chart-label {
+  margin-top: var(--space-2);
+  font-size: 0.75rem;
+  color: var(--neutral-500);
+}
+
+.chart-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chart-legend {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.875rem;
+  color: var(--neutral-600);
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  background-color: var(--primary-500);
+}
+
+@media (max-width: 768px) {
+  .chart-container {
+    height: 200px;
+  }
+  
+  .chart-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+}

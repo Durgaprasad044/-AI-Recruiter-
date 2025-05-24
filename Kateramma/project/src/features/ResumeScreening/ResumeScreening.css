@@ -1,0 +1,333 @@
+.resume-screening {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.section-description {
+  color: var(--neutral-600);
+  max-width: 800px;
+}
+
+.resume-screening-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.job-description-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.job-description-input {
+  width: 100%;
+  padding: var(--space-3);
+  border: 1px solid var(--neutral-300);
+  border-radius: var(--border-radius-md);
+  font-family: var(--font-family);
+  font-size: 1rem;
+  resize: vertical;
+}
+
+.job-description-input:focus {
+  outline: none;
+  border-color: var(--primary-400);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+.file-upload-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.file-upload-area {
+  position: relative;
+  width: 100%;
+}
+
+.file-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.file-upload-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  border: 2px dashed var(--neutral-300);
+  border-radius: var(--border-radius-md);
+  background-color: var(--neutral-50);
+  cursor: pointer;
+  transition: background-color var(--transition-standard), border-color var(--transition-standard);
+}
+
+.file-upload-label:hover {
+  background-color: var(--neutral-100);
+  border-color: var(--primary-400);
+}
+
+.upload-icon {
+  font-size: 2.5rem;
+  color: var(--neutral-500);
+}
+
+.upload-text {
+  text-align: center;
+}
+
+.upload-title {
+  font-weight: 500;
+  color: var(--neutral-700);
+  margin-bottom: var(--space-1);
+}
+
+.upload-subtitle {
+  font-size: 0.875rem;
+  color: var(--neutral-500);
+}
+
+.file-list {
+  padding: var(--space-4);
+  background-color: var(--neutral-50);
+  border-radius: var(--border-radius-md);
+}
+
+.file-list h4 {
+  margin-bottom: var(--space-3);
+  font-size: 1rem;
+}
+
+.file-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  background-color: white;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--neutral-200);
+}
+
+.file-name {
+  font-size: 0.875rem;
+  color: var(--neutral-700);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}
+
+.remove-file-btn {
+  background: none;
+  border: none;
+  color: var(--neutral-500);
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  transition: background-color var(--transition-standard), color var(--transition-standard);
+}
+
+.remove-file-btn:hover {
+  background-color: var(--neutral-100);
+  color: var(--error-500);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+/* Results styling */
+.screening-results {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.results-header h3 {
+  margin: 0;
+}
+
+.results-actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.candidates-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.candidate-card {
+  display: flex;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border-radius: var(--border-radius-lg);
+  background-color: var(--neutral-50);
+  transition: transform var(--transition-standard), box-shadow var(--transition-standard);
+}
+
+.candidate-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.candidate-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.score-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+.score-circle.high {
+  background-color: var(--success-500);
+  color: white;
+}
+
+.score-circle.medium {
+  background-color: var(--warning-500);
+  color: white;
+}
+
+.score-circle.low {
+  background-color: var(--error-500);
+  color: white;
+}
+
+.score-label {
+  font-size: 0.75rem;
+  color: var(--neutral-500);
+}
+
+.candidate-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.candidate-name {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.candidate-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.detail-item {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-size: 0.875rem;
+}
+
+.detail-label {
+  font-weight: 500;
+  color: var(--neutral-700);
+  min-width: 100px;
+}
+
+.detail-value {
+  color: var(--neutral-600);
+}
+
+.candidate-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.skill-tag {
+  font-size: 0.75rem;
+  padding: var(--space-1) var(--space-2);
+  background-color: var(--primary-100);
+  color: var(--primary-700);
+  border-radius: var(--border-radius-full);
+}
+
+.candidate-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-self: center;
+}
+
+@media (max-width: 768px) {
+  .candidate-card {
+    flex-direction: column;
+  }
+  
+  .candidate-score {
+    flex-direction: row;
+    gap: var(--space-2);
+  }
+  
+  .candidate-actions {
+    flex-direction: row;
+    width: 100%;
+    margin-top: var(--space-3);
+  }
+  
+  .candidate-actions button {
+    flex: 1;
+  }
+  
+  .results-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+  
+  .results-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
