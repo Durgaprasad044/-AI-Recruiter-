@@ -127,36 +127,22 @@ body {
   background: linear-gradient(90deg, #f09636, #c3d474);
   color: #7796d9;
 }
-.button.yellow:hover {
-  background: orange;
-}
 
 .button.red {
   background: linear-gradient(90deg, #f56565, #612b2b);
-}
-.button.red:hover {
-  background: #e53e3e;
 }
 
 .button.purple {
   background: linear-gradient(90deg, #9284bd, #3b15acd2);
 }
-.button.purple:hover {
-  background: #6d28d9;
-}
+
 
 .button.blue {
   background: linear-gradient(90deg, #3b82f6, #60a5fa);
 }
-.button.blue:hover {
-  background: #2563eb;
-}
 
 .button.green {
   background: linear-gradient(90deg, #82c6b0, #135a56);
-}
-.button.green:hover {
-  background: #059669;
 }
 
 /* ========== Lists ========== */
