@@ -1,6 +1,6 @@
 /* ========== Base Layout ========== */
 body {
-  background: linear-gradient(to right, #26c9f2, #1b9fd1);
+  background: linear-gradient(to right, #d8dee0, #dfe3e4);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   padding: 0;
@@ -24,11 +24,11 @@ body {
   will-change: filter, transform;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em rgba(100, 108, 255, 0.6));
+  filter: drop-shadow(0 0 2em rgba(16, 16, 18, 0.6));
   transform: scale(1.1);
 }
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em rgba(97, 218, 251, 0.7));
+  filter: drop-shadow(0 0 2em rgba(217, 222, 223, 0.7));
 }
 
 /* Logo Animation */
@@ -96,7 +96,7 @@ body {
 }
 .input:focus,
 .textarea:focus {
-  border-color: #6366f1;
+  border-color: #3737e3;
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
   outline: none;
 }
@@ -138,7 +138,7 @@ body {
 
 
 .button.blue {
-  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+  background: linear-gradient(90deg, #3e72cc, #60a5fa);
 }
 
 .button.green {

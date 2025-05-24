@@ -1,457 +1,346 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { MessageCircle, User, Bot, Play, Square, FileText, Download, RotateCcw } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { MessageCircle, Send, User, Bot, FileText, Clock } from 'lucide-react';
 
-export default function InterviewAgent() {
-  const [interviewState, setInterviewState] = useState('setup'); // setup, active, completed
+const InterviewAgent = ({ candidateName = "Candidate", jobRole = "Software Developer" }) => {
+  const [messages, setMessages] = useState([]);
+  const [currentMessage, setCurrentMessage] = useState('');
+  const [isInterviewActive, setIsInterviewActive] = useState(false);
+  const [interviewComplete, setInterviewComplete] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [questions, setQuestions] = useState([]);
-  const [responses, setResponses] = useState([]);
-  const [currentResponse, setCurrentResponse] = useState('');
-  const [interviewType, setInterviewType] = useState('technical');
-  const [candidateName, setCandidateName] = useState('');
-  const [position, setPosition] = useState('');
-  const [summary, setSummary] = useState('');
-  const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
-  const [adaptiveMode, setAdaptiveMode] = useState(true);
+  const [interviewSummary, setInterviewSummary] = useState(null);
+  const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
 
-  const interviewTypes = {
-    technical: [
-      "Tell me about your experience with React and modern JavaScript frameworks.",
-      "How do you approach debugging complex issues in your code?",
-      "Describe a challenging technical problem you've solved recently.",
-      "What's your experience with database design and optimization?",
-      "How do you ensure code quality and maintainability in your projects?"
-    ],
-    behavioral: [
-      "Tell me about a time when you had to work with a difficult team member.",
-      "Describe a situation where you had to meet a tight deadline.",
-      "How do you handle constructive criticism?",
-      "Tell me about a project you're particularly proud of.",
-      "Describe a time when you had to learn something completely new quickly."
-    ],
-    leadership: [
-      "How do you motivate team members during challenging projects?",
-      "Tell me about a time you had to make a difficult decision with limited information.",
-      "How do you handle conflicts within your team?",
-      "Describe your approach to delegating tasks and responsibilities.",
-      "How do you ensure effective communication across different departments?"
-    ]
-  };
+  const interviewQuestions = [
+    "Hi! I'm your AI interviewer. Let's start with a brief introduction - can you tell me about yourself and your background?",
+    "What interests you most about this Software Developer position, and how does it align with your career goals?",
+    "Can you describe a challenging technical problem you've solved recently? Walk me through your approach.",
+    "How do you stay updated with the latest technologies and trends in software development?",
+    "Describe a time when you had to work with a difficult team member. How did you handle the situation?",
+    "What's your experience with our tech stack, and how would you approach learning new technologies?",
+    "Where do you see yourself in your career in the next 3-5 years?",
+    "Do you have any questions about the role, team, or company culture?"
+  ];
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
     scrollToBottom();
-  }, [responses, questions]);
+  }, [messages]);
 
   const startInterview = () => {
-    const selectedQuestions = interviewTypes[interviewType];
-    setQuestions(selectedQuestions);
-    setInterviewState('active');
+    setIsInterviewActive(true);
+    setMessages([]);
     setCurrentQuestionIndex(0);
-    setResponses([]);
-  };
-
-  const generateAdaptiveQuestion = (previousResponse, questionIndex) => {
-    const adaptiveQuestions = {
-      technical: [
-        "That's interesting. Can you walk me through the specific technologies you used?",
-        "How would you scale that solution for enterprise-level applications?",
-        "What alternative approaches did you consider?",
-        "How do you stay updated with emerging technologies in this field?",
-        "What metrics do you use to measure the success of your technical solutions?"
-      ],
-      behavioral: [
-        "How did that experience change your approach to similar situations?",
-        "What would you do differently if faced with that situation again?",
-        "How did you measure the success of your actions?",
-        "What feedback did you receive from others involved?",
-        "How do you apply those lessons to your current work?"
-      ],
-      leadership: [
-        "What was the outcome of that leadership approach?",
-        "How do you adapt your leadership style to different team members?",
-        "What challenges did you face in implementing that strategy?",
-        "How do you measure team performance and satisfaction?",
-        "What leadership principles guide your decision-making?"
-      ]
-    };
-
-    return adaptiveQuestions[interviewType][questionIndex % adaptiveQuestions[interviewType].length];
-  };
-
-  const submitResponse = () => {
-    if (!currentResponse.trim()) return;
-
-    const newResponse = {
-      question: questions[currentQuestionIndex],
-      answer: currentResponse,
-      timestamp: new Date().toLocaleTimeString()
-    };
-
-    setResponses(prev => [...prev, newResponse]);
-    setCurrentResponse('');
-
-    if (currentQuestionIndex < questions.length - 1) {
-      // Generate next question (adaptive or sequential)
-      let nextQuestion;
-      if (adaptiveMode && currentQuestionIndex > 0) {
-        nextQuestion = generateAdaptiveQuestion(currentResponse, currentQuestionIndex);
-      } else {
-        nextQuestion = questions[currentQuestionIndex + 1];
-      }
-      
-      setQuestions(prev => {
-        const newQuestions = [...prev];
-        if (currentQuestionIndex + 1 < newQuestions.length) {
-          newQuestions[currentQuestionIndex + 1] = nextQuestion;
-        }
-        return newQuestions;
-      });
-      
-      setCurrentQuestionIndex(prev => prev + 1);
-    } else {
-      setInterviewState('completed');
-      generateSummary();
-    }
-  };
-
-  const generateSummary = async () => {
-    setIsGeneratingSummary(true);
     
-    // Simulate AI analysis
+    // Add initial AI message
     setTimeout(() => {
-      const analysisPoints = [];
+      addAIMessage(interviewQuestions[0]);
+    }, 500);
+  };
+
+  const addAIMessage = (text) => {
+    setIsTyping(true);
+    setTimeout(() => {
+      setMessages(prev => [...prev, {
+        id: Date.now(),
+        text,
+        sender: 'ai',
+        timestamp: new Date().toLocaleTimeString()
+      }]);
+      setIsTyping(false);
+    }, 1000);
+  };
+
+  const addUserMessage = (text) => {
+    setMessages(prev => [...prev, {
+      id: Date.now(),
+      text,
+      sender: 'user',
+      timestamp: new Date().toLocaleTimeString()
+    }]);
+  };
+
+  const sendMessage = () => {
+    if (!currentMessage.trim()) return;
+
+    addUserMessage(currentMessage);
+    setCurrentMessage('');
+
+    // Process next question or complete interview
+    setTimeout(() => {
+      const nextIndex = currentQuestionIndex + 1;
       
-      // Analyze response length and depth
-      const avgResponseLength = responses.reduce((acc, r) => acc + r.answer.length, 0) / responses.length;
-      if (avgResponseLength > 200) {
-        analysisPoints.push("• Candidate provides detailed, comprehensive responses");
+      if (nextIndex < interviewQuestions.length) {
+        setCurrentQuestionIndex(nextIndex);
+        addAIMessage(interviewQuestions[nextIndex]);
       } else {
-        analysisPoints.push("• Responses could be more detailed and elaborate");
+        // Complete interview
+        completeInterview();
       }
+    }, 1500);
+  };
 
-      // Analyze technical keywords (simplified)
-      const technicalKeywords = ['algorithm', 'database', 'framework', 'optimization', 'architecture', 'scalable'];
-      const keywordCount = responses.reduce((acc, r) => {
-        return acc + technicalKeywords.filter(keyword => 
-          r.answer.toLowerCase().includes(keyword)
-        ).length;
-      }, 0);
-
-      if (keywordCount > 3) {
-        analysisPoints.push("• Strong technical vocabulary and understanding demonstrated");
-      }
-
-      // Analyze problem-solving approach
-      const problemSolvingWords = ['challenge', 'solution', 'approach', 'analyze', 'implement'];
-      const problemSolvingScore = responses.reduce((acc, r) => {
-        return acc + problemSolvingWords.filter(word => 
-          r.answer.toLowerCase().includes(word)
-        ).length;
-      }, 0);
-
-      if (problemSolvingScore > 2) {
-        analysisPoints.push("• Demonstrates structured problem-solving methodology");
-      }
-
-      const summaryText = `
-**Interview Summary for ${candidateName}**
-**Position: ${position}**
-**Interview Type: ${interviewType.charAt(0).toUpperCase() + interviewType.slice(1)}**
-
-**Overall Assessment:**
-${analysisPoints.join('\n')}
-
-**Key Strengths:**
-• Communication skills appear strong based on response structure
-• Shows willingness to engage with complex questions
-• Demonstrates relevant experience in the field
-
-**Areas for Follow-up:**
-• Technical implementation details could be explored further
-• Leadership experience and team collaboration approach
-• Specific examples of past project outcomes
-
-**Recommendation:** 
-Based on this initial screening, the candidate shows promise and should be considered for the next round of interviews.
-
-**Interview Duration:** ${responses.length} questions completed
-**Completion Rate:** 100%
-      `;
-
-      setSummary(summaryText);
-      setIsGeneratingSummary(false);
-    }, 2000);
+  const completeInterview = () => {
+    setIsInterviewActive(false);
+    setInterviewComplete(true);
+    
+    addAIMessage("Thank you for completing the interview! I'm now generating your interview summary and assessment. Please wait a moment...");
+    
+    // Generate mock summary
+    setTimeout(() => {
+      const mockSummary = {
+        candidateName,
+        jobRole,
+        duration: "45 minutes",
+        overallScore: 8.5,
+        strengths: [
+          "Strong technical problem-solving skills",
+          "Good communication and articulation",
+          "Relevant experience with required technologies",
+          "Positive attitude and enthusiasm"
+        ],
+        areasForImprovement: [
+          "Could provide more specific examples",
+          "Leadership experience could be stronger"
+        ],
+        technicalAssessment: {
+          problemSolving: 9,
+          communication: 8,
+          technicalKnowledge: 8,
+          culturalFit: 9
+        },
+        recommendation: "Strong candidate - Recommend for next round",
+        keyResponses: [
+          {
+            question: "Technical problem-solving approach",
+            summary: "Demonstrated systematic thinking and good debugging methodology"
+          },
+          {
+            question: "Team collaboration",
+            summary: "Showed good interpersonal skills and conflict resolution abilities"
+          }
+        ]
+      };
+      
+      setInterviewSummary(mockSummary);
+    }, 3000);
   };
 
   const resetInterview = () => {
-    setInterviewState('setup');
+    setMessages([]);
+    setIsInterviewActive(false);
+    setInterviewComplete(false);
     setCurrentQuestionIndex(0);
-    setQuestions([]);
-    setResponses([]);
-    setCurrentResponse('');
-    setSummary('');
-    setCandidateName('');
-    setPosition('');
-  };
-
-  const exportSummary = () => {
-    const element = document.createElement('a');
-    const file = new Blob([summary], { type: 'text/plain' });
-    element.href = URL.createObjectURL(file);
-    element.download = `interview-summary-${candidateName.replace(/\s+/g, '-')}.txt`;
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
+    setInterviewSummary(null);
+    setCurrentMessage('');
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
-      <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
-          {/* Header */}
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-8 text-white">
-            <div className="flex items-center gap-3 mb-4">
-              <Bot className="w-8 h-8" />
-              <h1 className="text-3xl font-bold">AI Interview Agent</h1>
-            </div>
-            <p className="text-blue-100 text-lg">
-              Adaptive interview system with intelligent questioning and response analysis
+    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold text-gray-800 mb-2 flex items-center">
+          <MessageCircle className="mr-2" />
+          AI-Powered Interview Agent
+        </h2>
+        <p className="text-gray-600">Adaptive text-based interviews with real-time response analysis</p>
+      </div>
+
+      {!isInterviewActive && !interviewComplete && (
+        <div className="text-center py-12">
+          <div className="bg-blue-50 rounded-lg p-8 mb-6">
+            <Bot className="mx-auto h-16 w-16 text-blue-600 mb-4" />
+            <h3 className="text-xl font-semibold text-gray-800 mb-2">
+              Ready to start the interview for {candidateName}?
+            </h3>
+            <p className="text-gray-600 mb-4">
+              Position: <span className="font-medium">{jobRole}</span>
             </p>
+            <p className="text-sm text-gray-500 mb-6">
+              The interview will be adaptive and typically takes 30-45 minutes. 
+              I'll ask follow-up questions based on your responses.
+            </p>
+            <button
+              onClick={startInterview}
+              className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Start Interview
+            </button>
+          </div>
+        </div>
+      )}
+
+      {isInterviewActive && (
+        <div className="border border-gray-200 rounded-lg">
+          {/* Chat Header */}
+          <div className="bg-gray-50 px-4 py-3 border-b border-gray-200 rounded-t-lg">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <div className="bg-green-500 w-3 h-3 rounded-full mr-2"></div>
+                <span className="font-medium text-gray-800">Interview in Progress</span>
+              </div>
+              <div className="flex items-center text-sm text-gray-600">
+                <Clock className="w-4 h-4 mr-1" />
+                Question {currentQuestionIndex + 1} of {interviewQuestions.length}
+              </div>
+            </div>
           </div>
 
-          {/* Setup Phase */}
-          {interviewState === 'setup' && (
-            <div className="p-8">
-              <h2 className="text-2xl font-semibold mb-6 text-gray-800">Interview Setup</h2>
-              
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Candidate Name
-                  </label>
-                  <input
-                    type="text"
-                    value={candidateName}
-                    onChange={(e) => setCandidateName(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Enter candidate name"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Position
-                  </label>
-                  <input
-                    type="text"
-                    value={position}
-                    onChange={(e) => setPosition(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="e.g., Senior Software Engineer"
-                  />
+          {/* Messages Area */}
+          <div className="h-96 overflow-y-auto p-4 space-y-4">
+            {messages.map((message) => (
+              <div key={message.id} className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div className={`max-w-3xl rounded-lg p-3 ${
+                  message.sender === 'user' 
+                    ? 'bg-blue-600 text-white ml-12' 
+                    : 'bg-gray-100 text-gray-800 mr-12'
+                }`}>
+                  <div className="flex items-start">
+                    {message.sender === 'ai' && <Bot className="w-5 h-5 mr-2 mt-0.5 text-blue-600" />}
+                    {message.sender === 'user' && <User className="w-5 h-5 mr-2 mt-0.5" />}
+                    <div>
+                      <p className="text-sm">{message.text}</p>
+                      <p className={`text-xs mt-1 ${message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'}`}>
+                        {message.timestamp}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
-
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-3">
-                  Interview Type
-                </label>
-                <div className="grid grid-cols-3 gap-4">
-                  {Object.keys(interviewTypes).map(type => (
-                    <button
-                      key={type}
-                      onClick={() => setInterviewType(type)}
-                      className={`p-4 rounded-lg border-2 transition-all ${
-                        interviewType === type
-                          ? 'border-blue-500 bg-blue-50 text-blue-700'
-                          : 'border-gray-200 hover:border-gray-300'
-                      }`}
-                    >
-                      <div className="font-medium capitalize">{type}</div>
-                      <div className="text-sm text-gray-500 mt-1">
-                        {type === 'technical' && 'Code & Systems'}
-                        {type === 'behavioral' && 'Soft Skills'}
-                        {type === 'leadership' && 'Management'}
-                      </div>
-                    </button>
-                  ))}
+            ))}
+            
+            {isTyping && (
+              <div className="flex justify-start">
+                <div className="bg-gray-100 rounded-lg p-3 mr-12">
+                  <div className="flex items-center">
+                    <Bot className="w-5 h-5 mr-2 text-blue-600" />
+                    <div className="flex space-x-1">
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                    </div>
+                  </div>
                 </div>
               </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
 
-              <div className="mb-8">
-                <label className="flex items-center gap-3">
-                  <input
-                    type="checkbox"
-                    checked={adaptiveMode}
-                    onChange={(e) => setAdaptiveMode(e.target.checked)}
-                    className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500"
-                  />
-                  <span className="text-sm font-medium text-gray-700">
-                    Enable Adaptive Questioning (AI adjusts follow-up questions based on responses)
-                  </span>
-                </label>
-              </div>
-
+          {/* Input Area */}
+          <div className="border-t border-gray-200 p-4">
+            <div className="flex space-x-2">
+              <input
+                type="text"
+                value={currentMessage}
+                onChange={(e) => setCurrentMessage(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+                placeholder="Type your response..."
+                className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
               <button
-                onClick={startInterview}
-                disabled={!candidateName || !position}
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-lg font-medium text-lg hover:from-blue-700 hover:to-indigo-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                onClick={sendMessage}
+                disabled={!currentMessage.trim()}
+                className="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
               >
-                <Play className="w-5 h-5" />
-                Start Interview
+                <Send className="w-5 h-5" />
               </button>
             </div>
-          )}
+          </div>
+        </div>
+      )}
 
-          {/* Active Interview */}
-          {interviewState === 'active' && (
-            <div className="p-8">
-              <div className="flex justify-between items-center mb-6">
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-800">
-                    Interviewing: {candidateName}
-                  </h2>
-                  <p className="text-gray-600">{position} - {interviewType} Interview</p>
-                </div>
-                <div className="text-sm text-gray-500">
-                  Question {currentQuestionIndex + 1} of {questions.length}
-                </div>
+      {interviewSummary && (
+        <div className="mt-6 border border-gray-200 rounded-lg p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-xl font-semibold text-gray-800 flex items-center">
+              <FileText className="mr-2" />
+              Interview Summary & Assessment
+            </h3>
+            <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+              Score: {interviewSummary.overallScore}/10
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-3">Candidate Details</h4>
+              <div className="space-y-2 text-sm">
+                <p><span className="font-medium">Name:</span> {interviewSummary.candidateName}</p>
+                <p><span className="font-medium">Position:</span> {interviewSummary.jobRole}</p>
+                <p><span className="font-medium">Duration:</span> {interviewSummary.duration}</p>
               </div>
+            </div>
 
-              {/* Progress Bar */}
-              <div className="w-full bg-gray-200 rounded-full h-2 mb-8">
-                <div 
-                  className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                  style={{ width: `${((currentQuestionIndex + 1) / questions.length) * 100}%` }}
-                ></div>
-              </div>
-
-              {/* Conversation History */}
-              <div className="bg-gray-50 rounded-lg p-6 mb-6 max-h-96 overflow-y-auto">
-                {responses.map((response, idx) => (
-                  <div key={idx} className="mb-6 last:mb-0">
-                    <div className="flex items-start gap-3 mb-3">
-                      <Bot className="w-6 h-6 text-blue-600 mt-1 flex-shrink-0" />
-                      <div className="bg-blue-100 rounded-lg p-3 flex-1">
-                        <p className="text-gray-800">{response.question}</p>
-                        <span className="text-xs text-gray-500">{response.timestamp}</span>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <User className="w-6 h-6 text-green-600 mt-1 flex-shrink-0" />
-                      <div className="bg-green-100 rounded-lg p-3 flex-1">
-                        <p className="text-gray-800">{response.answer}</p>
-                      </div>
-                    </div>
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-3">Technical Assessment</h4>
+              <div className="space-y-2">
+                {Object.entries(interviewSummary.technicalAssessment).map(([key, value]) => (
+                  <div key={key} className="flex justify-between items-center">
+                    <span className="text-sm capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}:</span>
+                    <span className="font-medium">{value}/10</span>
                   </div>
                 ))}
-                <div ref={messagesEndRef} />
-              </div>
-
-              {/* Current Question */}
-              <div className="bg-blue-50 rounded-lg p-6 mb-6">
-                <div className="flex items-start gap-3">
-                  <Bot className="w-6 h-6 text-blue-600 mt-1" />
-                  <div>
-                    <p className="text-gray-800 text-lg font-medium">
-                      {questions[currentQuestionIndex]}
-                    </p>
-                    {adaptiveMode && currentQuestionIndex > 0 && (
-                      <span className="text-xs text-blue-600 bg-blue-200 px-2 py-1 rounded mt-2 inline-block">
-                        Adaptive Question
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {/* Response Input */}
-              <div className="space-y-4">
-                <textarea
-                  value={currentResponse}
-                  onChange={(e) => setCurrentResponse(e.target.value)}
-                  placeholder="Type your response here..."
-                  rows="4"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-                />
-                <div className="flex gap-3">
-                  <button
-                    onClick={submitResponse}
-                    disabled={!currentResponse.trim()}
-                    className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {currentQuestionIndex === questions.length - 1 ? 'Complete Interview' : 'Next Question'}
-                  </button>
-                  <button
-                    onClick={resetInterview}
-                    className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-                  >
-                    <RotateCcw className="w-5 h-5" />
-                  </button>
-                </div>
               </div>
             </div>
-          )}
+          </div>
 
-          {/* Completed Interview */}
-          {interviewState === 'completed' && (
-            <div className="p-8">
-              <div className="text-center mb-8">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <FileText className="w-8 h-8 text-green-600" />
-                </div>
-                <h2 className="text-2xl font-semibold text-gray-800 mb-2">Interview Completed</h2>
-                <p className="text-gray-600">
-                  AI analysis complete for {candidateName}
-                </p>
-              </div>
-
-              {isGeneratingSummary ? (
-                <div className="text-center py-8">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                  <p className="text-gray-600">Analyzing responses and generating summary...</p>
-                </div>
-              ) : (
-                <div className="space-y-6">
-                  <div className="bg-gray-50 rounded-lg p-6">
-                    <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                      <MessageCircle className="w-5 h-5" />
-                      Interview Summary
-                    </h3>
-                    <div className="prose prose-sm max-w-none">
-                      <pre className="whitespace-pre-wrap text-sm text-gray-700 font-sans">
-                        {summary}
-                      </pre>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-4">
-                    <button
-                      onClick={exportSummary}
-                      className="flex-1 bg-green-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
-                    >
-                      <Download className="w-5 h-5" />
-                      Export Summary
-                    </button>
-                    <button
-                      onClick={resetInterview}
-                      className="flex-1 bg-gray-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-gray-700 transition-colors flex items-center justify-center gap-2"
-                    >
-                      <RotateCcw className="w-5 h-5" />
-                      New Interview
-                    </button>
-                  </div>
-                </div>
-              )}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-3 text-green-700">Strengths</h4>
+              <ul className="space-y-1">
+                {interviewSummary.strengths.map((strength, index) => (
+                  <li key={index} className="text-sm text-gray-600 flex items-start">
+                    <span className="text-green-500 mr-2">•</span>
+                    {strength}
+                  </li>
+                ))}
+              </ul>
             </div>
-          )}
+
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-3 text-orange-700">Areas for Improvement</h4>
+              <ul className="space-y-1">
+                {interviewSummary.areasForImprovement.map((area, index) => (
+                  <li key={index} className="text-sm text-gray-600 flex items-start">
+                    <span className="text-orange-500 mr-2">•</span>
+                    {area}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div className="mb-6">
+            <h4 className="font-semibold text-gray-800 mb-3">Key Response Summary</h4>
+            <div className="space-y-3">
+              {interviewSummary.keyResponses.map((response, index) => (
+                <div key={index} className="bg-gray-50 p-3 rounded">
+                  <p className="font-medium text-sm text-gray-800">{response.question}</p>
+                  <p className="text-sm text-gray-600 mt-1">{response.summary}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="bg-blue-50 p-4 rounded-lg">
+            <h4 className="font-semibold text-blue-800 mb-2">Recommendation</h4>
+            <p className="text-blue-700">{interviewSummary.recommendation}</p>
+          </div>
+
+          <div className="mt-6 flex justify-center">
+            <button
+              onClick={resetInterview}
+              className="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700"
+            >
+              Start New Interview
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
-}
+};
+
+export default InterviewAgent;
