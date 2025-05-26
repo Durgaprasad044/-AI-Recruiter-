@@ -142,6 +142,10 @@ Best regards,
   const handleMessageChange = (e) => {
     setCustomizedMessage(e.target.value);
   };
+
+  const insertVariable = (variable) => {
+    setCustomizedMessage(prevMessage => prevMessage + variable);
+  };
   
   return (
     <div className="candidate-messaging">
@@ -235,20 +239,20 @@ Best regards,
                     <h4>Available Variables</h4>
                     <p>Click to insert:</p>
                     <div className="variables-list">
-                      <button className="variable-button">[Candidate Name]</button>
-                      <button className="variable-button">[Position]</button>
-                      <button className="variable-button">[Company Name]</button>
-                      <button className="variable-button">[Your Name]</button>
-                      <button className="variable-button">[Your Position]</button>
-                      <button className="variable-button">[Date]</button>
-                      <button className="variable-button">[Time]</button>
+                      <button className="variable-button" onClick={() => insertVariable('[Candidate Name]')}>[Candidate Name]</button>
+                      <button className="variable-button" onClick={() => insertVariable('[Position]')}>[Position]</button>
+                      <button className="variable-button" onClick={() => insertVariable('[Company Name]')}>[Company Name]</button>
+                      <button className="variable-button" onClick={() => insertVariable('[Your Name]')}>[Your Name]</button>
+                      <button className="variable-button" onClick={() => insertVariable('[Your Position]')}>[Your Position]</button>
+                      <button className="variable-button" onClick={() => insertVariable('[Date]')}>[Date]</button>
+                      <button className="variable-button" onClick={() => insertVariable('[Time]')}>[Time]</button>
                     </div>
                   </div>
                   
                   <div className="message-actions">
-                    <Button variant="outline">Preview</Button>
-                    <Button variant="outline">Save as Template</Button>
-                    <Button>Send Message</Button>
+                    <Button variant="outline" onClick={() => alert('Preview functionality is not implemented yet.')}>Preview</Button>
+                    <Button variant="outline" onClick={() => alert('Save as Template functionality is not implemented yet.')}>Save as Template</Button>
+                    <Button onClick={() => alert('Send Message functionality is not implemented yet.')}>Send Message</Button>
                   </div>
                 </div>
               </Card>

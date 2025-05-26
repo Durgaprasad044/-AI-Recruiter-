@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './CandidateActivity.css';
 import Card from '../../../components/UI/Card';
 import Button from '../../../components/UI/Button';
@@ -6,17 +6,57 @@ import Button from '../../../components/UI/Button';
 function CandidateActivity() {
   const [activeTab, setActiveTab] = useState('weekly');
   
-  // Sample data
-  const data = {
-    weekly: [25, 38, 42, 30, 35, 20, 28],
-    monthly: [120, 145, 165, 180, 172, 190, 210, 205, 220, 215, 230, 245],
-    yearly: [1200, 1450, 1700, 2000, 1950]
-  };
-  
+  const [data, setData] = useState({
+    weekly: [],
+    monthly: [],
+    yearly: []
+  });
+
   const labels = {
     weekly: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
     monthly: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     yearly: ['2021', '2022', '2023', '2024', '2025']
+  };
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchCandidateActivity = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const response = await fetch('http://localhost:3001/api/candidate-activity');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const candidateActivityData = await response.json();
+        // Extract relevant data for the weekly chart
+        const weeklyActivityData = candidateActivityData.map(item => item.id);
+
+        setData((prevState) => ({
+          ...prevState,
+          weekly: weeklyActivityData,
+        }));
+      } catch (e) {
+        setError(e.message);
+        console.error("Failed to fetch candidate activity:", e);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCandidateActivity();
+  }, []);
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    // You can add logic here to fetch different data based on the tab
+    // For now, we'll just update the activeTab state
+  };
+
+  const handleViewReport = () => {
+    alert('View Detailed Report functionality is not implemented yet.');
+    // Implement the logic to view the detailed report
   };
   
   const maxValue = Math.max(...data[activeTab]);
@@ -33,26 +73,28 @@ function CandidateActivity() {
               <span>New Applications</span>
             </div>
           </div>
-          <Button variant="ghost" size="small">View Detailed Report</Button>
+          <Button variant="ghost" size="small" onClick={handleViewReport}>View Detailed Report</Button>
         </div>
       }
     >
+      {isLoading && <p>Loading candidate activity data...</p>}
+      {error && <p>Error: {error}</p>}
       <div className="chart-tabs">
         <button 
           className={`chart-tab ${activeTab === 'weekly' ? 'active' : ''}`}
-          onClick={() => setActiveTab('weekly')}
+          onClick={() => handleTabChange('weekly')}
         >
           Weekly
         </button>
-        <button 
+        <button
           className={`chart-tab ${activeTab === 'monthly' ? 'active' : ''}`}
-          onClick={() => setActiveTab('monthly')}
+          onClick={() => handleTabChange('monthly')}
         >
           Monthly
         </button>
-        <button 
+        <button
           className={`chart-tab ${activeTab === 'yearly' ? 'active' : ''}`}
-          onClick={() => setActiveTab('yearly')}
+          onClick={() => handleTabChange('yearly')}
         >
           Yearly
         </button>

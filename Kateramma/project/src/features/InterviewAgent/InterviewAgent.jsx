@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import './InterviewAgent.css';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 
